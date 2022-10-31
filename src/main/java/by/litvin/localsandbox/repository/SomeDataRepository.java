@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.data.repository;
+package by.litvin.localsandbox.repository;
 
 import by.litvin.localsandbox.data.SomeData;
 import org.springframework.data.repository.CrudRepository;

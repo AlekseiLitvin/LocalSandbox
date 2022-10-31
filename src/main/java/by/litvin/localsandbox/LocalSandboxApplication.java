@@ -1,7 +1,7 @@
 package by.litvin.localsandbox;
 
 import by.litvin.localsandbox.data.SomeData;
-import by.litvin.localsandbox.data.repository.SomeDataRepository;
+import by.litvin.localsandbox.repository.SomeDataRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
