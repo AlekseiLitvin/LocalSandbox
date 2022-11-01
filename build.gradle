@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.sonarqube' version '3.5.0.2730'
     id 'java'
 }
 
@@ -20,6 +21,14 @@ dependencies {
 
 //    Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "LocalSandbox"
+        property "sonar.host.url", "http://ol.local:9000"
+        property "sonar.login", "sqp_4502bcf675b5c6b6557eb10fccb2d881b8aeb7d4"
+    }
 }
 
 tasks.named('test') {
