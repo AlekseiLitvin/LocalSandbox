@@ -23,7 +23,6 @@ public class LocalSandboxApplication {
             repo.save(new SomeData(UUID.randomUUID().toString()));
             repo.save(new SomeData(UUID.randomUUID().toString()));
             repo.save(new SomeData(UUID.randomUUID().toString()));
-            repo.save(new SomeData(UUID.randomUUID().toString()));
         };
 
     }

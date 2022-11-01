@@ -22,8 +22,6 @@ public class SomeData {
     @Id
     @GeneratedValue
     private Long id;
-
     private String text;
-
     private LocalDateTime creationDate = LocalDateTime.now();
 }

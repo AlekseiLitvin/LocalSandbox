@@ -19,7 +19,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     runtimeOnly 'org.postgresql:postgresql'
 
-//    Testing
+    // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
@@ -27,7 +27,7 @@ sonarqube {
     properties {
         property "sonar.projectKey", "LocalSandbox"
         property "sonar.host.url", "http://ol.local:9000"
-        property "sonar.login", "sqp_4502bcf675b5c6b6557eb10fccb2d881b8aeb7d4"
+        property "sonar.login", "sqp_a726b60db11ccd2d4975493f986a3647e87daf79"
     }
 }
 
