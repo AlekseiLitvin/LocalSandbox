@@ -26,6 +26,7 @@ services:
       - sonarqube_logs:/opt/sonarqube/logs
     ports:
       - "9000:9000"
+    network_mode: host
 volumes:
   postgres_data:
     driver: local
