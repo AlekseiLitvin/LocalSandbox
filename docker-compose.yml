@@ -38,7 +38,7 @@ services:
     ports:
       - "9010:9000"
       - "9011:9090"
-    command: server /data --console-address ":9002"
+    command: server /data --console-address ":9090"
 
 volumes:
   postgres_data:
