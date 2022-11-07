@@ -36,8 +36,8 @@ services:
     volumes:
       - minio_data:/data
     ports:
-      - "9001:9000"
-      - "9002:9090"
+      - "9010:9000"
+      - "9011:9090"
     command: server /data --console-address ":9002"
 
 volumes:
