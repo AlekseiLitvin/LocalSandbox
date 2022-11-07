@@ -27,6 +27,19 @@ services:
     ports:
       - "9000:9000"
     network_mode: host
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: root
+      MINIO_ROOT_PASSWORD: root
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9001:9000"
+      - "9002:9090"
+    command: server /data --console-address ":9002"
+
 volumes:
   postgres_data:
     driver: local

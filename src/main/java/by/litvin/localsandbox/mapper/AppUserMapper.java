@@ -9,5 +9,6 @@ public interface AppUserMapper {
 
     AppUserData toAppUserDto(AppUser appUser);
 
-    AppUser toAppUser(AppUserData appUser);
+    // TODO fix warning: Unmapped target properties: "firstName, lastName, email, phone"
+    //    AppUser toAppUser(AppUserData appUser);
 }

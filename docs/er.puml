@@ -21,20 +21,20 @@ entity Post {
     *id: bigint,
     --
     *creationDate, date
-    *user_id, bigint
+    *app_user_id, bigint
 }
 
 entity Comment {
     *id, bigint,
     --
     text, varchar(255),
-    user_id, bigint
+    app_user_id, bigint
     post_id, bigint
 }
 
 entity Like {
     *id, bigint,
-    *user_id, bigint
+    *app_user_id, bigint
     *post_id, bigint,
     date, date
 }
