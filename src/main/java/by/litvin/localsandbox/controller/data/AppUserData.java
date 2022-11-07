@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class SomeDataDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class AppUserData {
 
-    private String text;
+    private String firstName;
+
+    private String lastName;
 }

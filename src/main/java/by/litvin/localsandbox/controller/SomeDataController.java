@@ -1,6 +1,5 @@
 package by.litvin.localsandbox.controller;
 
-import by.litvin.localsandbox.controller.data.SomeDataDto;
 import by.litvin.localsandbox.data.SomeData;
 import by.litvin.localsandbox.repository.SomeDataRepository;
 import org.slf4j.Logger;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +28,6 @@ public class SomeDataController {
 
     @GetMapping
     public ResponseEntity<String> hello() {
-        log.info("Info logs");
-        log.debug("Debug logs");
         return ResponseEntity.ok("It works");
     }
 
@@ -44,11 +39,11 @@ public class SomeDataController {
                 .body(created);
     }
 
-    @PostMapping
-    public SomeData create(@RequestBody SomeDataDto dto) {
-        SomeData someData = new SomeData(dto.getText());
-        return someDataRepository.save(someData);
-    }
+    //    @PostMapping
+    //    public SomeData create(@RequestBody SomeDataDto dto) {
+    //        SomeData someData = new SomeData(dto.getText());
+    //        return someDataRepository.save(someData);
+    //    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

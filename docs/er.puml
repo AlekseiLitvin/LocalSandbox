@@ -1,0 +1,50 @@
+@startuml
+
+' To get more info about puml styles
+' see https://plantuml.com/ and https://plantuml-documentation.readthedocs.io/en/latest/diagrams/index.html (unofficial)
+
+skinparam backgroundcolor white
+skinparam defaultFontSize 14
+skinparam linetype ortho
+skinparam SameClassWidth true
+
+
+entity AppUser {
+    *id, bigint,
+    first_name, varchar(30),
+    last_name, varchar(30),
+    email, varchar(320),
+    phone, varchar (20)
+}
+
+entity Post {
+    *id: bigint,
+    --
+    *creationDate, date
+    *user_id, bigint
+}
+
+entity Comment {
+    *id, bigint,
+    --
+    text, varchar(255),
+    user_id, bigint
+    post_id, bigint
+}
+
+entity Like {
+    *id, bigint,
+    *user_id, bigint
+    *post_id, bigint,
+    date, date
+}
+
+
+AppUser ||--o{ Post
+AppUser ||--o{ Comment
+AppUser ||--o{ Like
+Post ||--o{ Comment
+Post ||--o{ Like
+
+
+@enduml
