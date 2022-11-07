@@ -49,3 +49,5 @@ volumes:
     driver: local
   sonarqube_logs:
     driver: local
+  minio_data:
+    driver: local
