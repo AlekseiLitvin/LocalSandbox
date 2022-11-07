@@ -1,7 +1,6 @@
 package by.litvin.localsandbox.controller;
 
 import by.litvin.localsandbox.LocalSandboxApplication;
-import by.litvin.localsandbox.data.SomeData;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
