@@ -36,8 +36,8 @@ services:
     volumes:
       - minio_data:/data
     ports:
-      - "9010:9000"
-      - "9011:9090"
+      - "9010:9000" # API calls
+      - "9090:9090" # Web UI
     command: server /data --console-address ":9090"
 
 volumes:
