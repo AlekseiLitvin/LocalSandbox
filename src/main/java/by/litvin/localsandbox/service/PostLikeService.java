@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.service;
 
-import by.litvin.localsandbox.data.PostLike;
+import by.litvin.localsandbox.model.PostLike;
 
 public interface PostLikeService {
 

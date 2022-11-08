@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.controller.data;
+package by.litvin.localsandbox.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

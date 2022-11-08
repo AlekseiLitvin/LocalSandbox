@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.repository;
 
-import by.litvin.localsandbox.data.PostLike;
+import by.litvin.localsandbox.model.PostLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

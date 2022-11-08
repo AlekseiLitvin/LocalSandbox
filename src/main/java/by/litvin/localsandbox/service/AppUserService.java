@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.service;
 
-import by.litvin.localsandbox.data.AppUser;
+import by.litvin.localsandbox.model.AppUser;
 
 import java.util.List;
 

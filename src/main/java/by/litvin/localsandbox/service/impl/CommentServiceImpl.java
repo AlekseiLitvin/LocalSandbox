@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.service.impl;
 
-import by.litvin.localsandbox.data.Comment;
+import by.litvin.localsandbox.model.Comment;
 import by.litvin.localsandbox.repository.CommentRepository;
 import by.litvin.localsandbox.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.service.impl;
 
-import by.litvin.localsandbox.data.AppUser;
+import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.repository.AppUserRepository;
 import by.litvin.localsandbox.service.AppUserService;
 import org.springframework.stereotype.Service;

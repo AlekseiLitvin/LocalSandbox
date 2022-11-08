@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.data;
+package by.litvin.localsandbox.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

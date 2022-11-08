@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.service;
 
-import by.litvin.localsandbox.data.Comment;
+import by.litvin.localsandbox.model.Comment;
 
 public interface CommentService {
 

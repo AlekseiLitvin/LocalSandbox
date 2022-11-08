@@ -1,10 +1,12 @@
 package by.litvin.localsandbox.service;
 
-import by.litvin.localsandbox.data.Post;
+import by.litvin.localsandbox.data.CreatePostData;
+import by.litvin.localsandbox.data.CreatePostResult;
+import by.litvin.localsandbox.model.Post;
 
 public interface PostService {
 
-    Post create(Post post);
+    CreatePostResult create(CreatePostData createPostData);
 
     Post getById(Long id);
 

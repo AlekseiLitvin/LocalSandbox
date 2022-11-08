@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.service.impl;
 
-import by.litvin.localsandbox.data.PostLike;
+import by.litvin.localsandbox.model.PostLike;
 import by.litvin.localsandbox.repository.PostLikeRepository;
 import by.litvin.localsandbox.service.PostLikeService;
 import org.springframework.stereotype.Service;

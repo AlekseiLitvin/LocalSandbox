@@ -1,7 +1,7 @@
 package by.litvin.localsandbox.mapper;
 
-import by.litvin.localsandbox.controller.data.AppUserData;
-import by.litvin.localsandbox.data.AppUser;
+import by.litvin.localsandbox.data.AppUserData;
+import by.litvin.localsandbox.model.AppUser;
 import org.mapstruct.Mapper;
 
 @Mapper
