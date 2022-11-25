@@ -1,10 +1,12 @@
 package by.litvin.localsandbox.service;
 
+import by.litvin.localsandbox.data.CreateCommentRequest;
+import by.litvin.localsandbox.data.CreateCommentResult;
 import by.litvin.localsandbox.model.Comment;
 
 public interface CommentService {
 
-    Comment create(Comment comment);
+    CreateCommentResult create(CreateCommentRequest comment);
 
     Comment getById(Long id);
 

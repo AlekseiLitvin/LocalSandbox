@@ -38,7 +38,7 @@ sonarqube {
     properties {
         property "sonar.projectKey", "LocalSandbox"
         property "sonar.host.url", "http://ol.local:9000"
-        property "sonar.login", "sqp_a726b60db11ccd2d4975493f986a3647e87daf79"
+        property "sonar.login", "sqp_1bc37056eabcb802a122b9f2a14e7d3c52f77cf4"
     }
 }
 

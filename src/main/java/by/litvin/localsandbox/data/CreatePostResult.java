@@ -21,7 +21,7 @@ public class CreatePostResult {
     private Status status;
 
     public enum Status {
-        SUCCESS, USER_NOT_EXISTS
+        CREATED, USER_NOT_EXISTS
     }
 
 }

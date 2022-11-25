@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Application user entity
+ */
 @Entity
 @Getter
 @Setter

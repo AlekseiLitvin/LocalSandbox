@@ -44,7 +44,7 @@ public class PostLikeListener {
     }
 
     /**
-     * Uncomment to enable dead-letter queue processing
+     * Consumes all messages sent to DLT
      */
     @DltHandler
     public void dlt(

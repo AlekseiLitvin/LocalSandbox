@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * User post entity
+ */
 @Getter
 @Setter
 @NoArgsConstructor

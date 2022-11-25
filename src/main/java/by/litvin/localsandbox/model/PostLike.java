@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
+/**
+ * Post like entity
+ */
 @Entity
 @Getter
 @Setter

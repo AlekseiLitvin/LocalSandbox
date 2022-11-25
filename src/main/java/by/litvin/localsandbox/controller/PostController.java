@@ -1,11 +1,10 @@
 package by.litvin.localsandbox.controller;
 
-import by.litvin.localsandbox.data.CreatePostData;
-import by.litvin.localsandbox.data.CreatePostResponse;
+import by.litvin.localsandbox.data.CreatePostRequest;
 import by.litvin.localsandbox.data.CreatePostResult;
-import by.litvin.localsandbox.mapper.PostMapper;
 import by.litvin.localsandbox.model.Post;
 import by.litvin.localsandbox.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,15 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/posts")
+@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
-    private final PostMapper postMapper;
-
-    public PostController(PostService postService, PostMapper postMapper) {
-        this.postService = postService;
-        this.postMapper = postMapper;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Post> findById(@PathVariable Long id) {
@@ -35,13 +29,12 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@ModelAttribute CreatePostData createPostData) {
-        CreatePostResult result = postService.create(createPostData);
-        if (result.getStatus() == CreatePostResult.Status.USER_NOT_EXISTS) {
-            return ResponseEntity.badRequest().body("User not found");
+    public ResponseEntity<CreatePostResult> create(@ModelAttribute CreatePostRequest createPostRequest) {
+        CreatePostResult createPostResult = postService.create(createPostRequest);
+        if (createPostResult.getStatus() == CreatePostResult.Status.USER_NOT_EXISTS) {
+            return ResponseEntity.badRequest().body(createPostResult);
         } else {
-            CreatePostResponse response = postMapper.toCreatePostResponse(result.getPost());
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createPostResult);
         }
     }
 

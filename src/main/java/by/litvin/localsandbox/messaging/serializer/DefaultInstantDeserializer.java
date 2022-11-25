@@ -8,8 +8,9 @@ import java.time.format.DateTimeFormatter;
 /**
  * Default {@link InstantDeserializer} implementation doesn't work with kafka serializer,
  * since it does not provide a default constructor.
- * This is a simple wrapper to add ti
+ * This is a simple wrapper to add it
  */
+@SuppressWarnings("java:S110")
 public class DefaultInstantDeserializer extends InstantDeserializer<Instant> {
 
     public DefaultInstantDeserializer() {

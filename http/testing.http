@@ -1,0 +1,8 @@
+POST localhost:8080/comments/
+Content-Type: application/json
+
+{
+  "postId": 73337,
+  "userId": 77,
+  "text": "ok"
+}

@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.service.impl;
 
-import by.litvin.localsandbox.data.CreatePostData;
+import by.litvin.localsandbox.data.CreatePostRequest;
 import by.litvin.localsandbox.data.CreatePostResult;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Post;
@@ -30,15 +30,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public CreatePostResult create(CreatePostData createPostData) {
-        Optional<AppUser> appUser = appUserRepository.findById(createPostData.getUserId());
+    public CreatePostResult create(CreatePostRequest createPostRequest) {
+        Optional<AppUser> appUser = appUserRepository.findById(createPostRequest.getUserId());
         if (appUser.isEmpty()) {
             return new CreatePostResult(CreatePostResult.Status.USER_NOT_EXISTS);
         }
 
-        String mediaUrl = blobStorageService.savePostMedia(multipartToFile(createPostData.getMedia()));
-        Post post = postRepository.save(new Post(createPostData.getMessage(), mediaUrl, appUser.get()));
-        return new CreatePostResult(post, CreatePostResult.Status.SUCCESS);
+        String mediaUrl = blobStorageService.savePostMedia(multipartToFile(createPostRequest.getMedia()));
+        Post post = postRepository.save(new Post(createPostRequest.getMessage(), mediaUrl, appUser.get()));
+        return new CreatePostResult(post, CreatePostResult.Status.CREATED);
     }
 
     @Override
