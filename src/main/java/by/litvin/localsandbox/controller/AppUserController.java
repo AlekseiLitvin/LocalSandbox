@@ -28,12 +28,7 @@ public class AppUserController {
 
     @PostMapping
     public ResponseEntity<AppUser> create(@RequestBody CreateUserRequest createUserRequest) {
-        AppUser appUser = new AppUser(
-                createUserRequest.getFirstName(),
-                createUserRequest.getLastName(),
-                createUserRequest.getEmail(),
-                createUserRequest.getPhone());
-        AppUser user = appUserService.create(appUser);
+        AppUser user = appUserService.create(createUserRequest);
         return ResponseEntity.ok(user);
     }
 
