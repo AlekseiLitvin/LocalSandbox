@@ -10,6 +10,7 @@ import by.litvin.localsandbox.service.BlobStorageService;
 import by.litvin.localsandbox.service.PostService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -30,6 +31,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public CreatePostResult create(CreatePostRequest createPostRequest) {
         Optional<AppUser> appUser = appUserRepository.findById(createPostRequest.getUserId());
         if (appUser.isEmpty()) {
@@ -47,6 +49,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         postRepository.deleteById(id);
     }

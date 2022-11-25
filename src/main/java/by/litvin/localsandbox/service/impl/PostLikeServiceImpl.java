@@ -11,6 +11,7 @@ import by.litvin.localsandbox.service.PostLikeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class PostLikeServiceImpl implements PostLikeService {
     }
 
     @Override
+    @Transactional
     public void saveEvent(PostLikeEvent postLikeEvent) {
         long userId = postLikeEvent.getUserId();
         long postId = postLikeEvent.getPostId();
@@ -51,6 +53,7 @@ public class PostLikeServiceImpl implements PostLikeService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         postLikeRepository.deleteById(id);
     }

@@ -7,6 +7,7 @@ import by.litvin.localsandbox.repository.AppUserRepository;
 import by.litvin.localsandbox.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class AppUserServiceImpl implements AppUserService {
     private final AppUserMapper appUserMapper;
 
     @Override
+    @Transactional
     public AppUser create(CreateUserRequest createUserRequest) {
         AppUser user = appUserMapper.toCreateUserRequest(createUserRequest);
         return appUserRepository.save(user);
@@ -29,6 +31,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         appUserRepository.deleteById(id);
     }

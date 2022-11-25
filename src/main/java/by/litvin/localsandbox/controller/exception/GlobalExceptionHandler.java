@@ -6,7 +6,7 @@ import org.springframework.web.context.request.WebRequest;
 //@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // TODO
+    // TODO implement some handlers
     //    @ExceptionHandler()
     public ResponseEntity<Object> handle(Exception ex, WebRequest request) {
         return null;
