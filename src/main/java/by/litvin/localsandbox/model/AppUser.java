@@ -4,22 +4,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * Application user entity
+ * Spring cache requited an entity to be {@link Serializable}
  */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class AppUser {
+public class AppUser implements Serializable {
 
     public AppUser(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
@@ -39,11 +37,5 @@ public class AppUser {
     private String email;
 
     private String phone;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
-    private List<Comment> comments = new ArrayList<>();
 
 }

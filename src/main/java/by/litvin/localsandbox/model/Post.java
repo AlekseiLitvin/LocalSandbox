@@ -4,16 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User post entity
@@ -22,7 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Post {
+public class Post implements Serializable {
 
     public Post(String message, String mediaUrl, AppUser appUser) {
         this.message = message;
@@ -43,10 +40,4 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "app_user_id")
     private AppUser appUser;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
-    private List<PostLike> postLikes = new ArrayList<>();
 }

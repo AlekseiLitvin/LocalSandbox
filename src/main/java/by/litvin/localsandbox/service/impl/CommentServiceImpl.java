@@ -2,6 +2,7 @@ package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CreateCommentRequest;
 import by.litvin.localsandbox.data.CreateCommentResult;
+import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Comment;
 import by.litvin.localsandbox.model.Post;
@@ -26,6 +27,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final AppUserRepository appUserRepository;
+    private final CommentMapper commentMapper;
 
     @Override
     @Transactional

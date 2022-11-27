@@ -6,3 +6,6 @@ Content-Type: application/json
   "userId": 77,
   "text": "ok"
 }
+
+### Get comment
+GET localhost:8080/comments/80

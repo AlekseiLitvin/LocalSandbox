@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 /**
  * Post comment entity
@@ -17,7 +18,7 @@ import javax.persistence.ManyToOne;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Comment {
+public class Comment implements Serializable {
 
     public Comment(String text, AppUser appUser, Post post) {
         this.text = text;
