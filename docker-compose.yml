@@ -70,6 +70,19 @@ services:
       - '6379:6379'
     volumes:
       - redis_data:/data
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "7070:9090"
+    volumes:
+      - ~/jp/configs/prometheus:/etc/prometheus
+  ast_online:
+    image: ast_online
+    container_name: ast_online
+    ports:
+      - "7755:7755"
+
 volumes:
   postgres_data:
     driver: local
