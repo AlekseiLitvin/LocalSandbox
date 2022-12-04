@@ -76,7 +76,7 @@ services:
     ports:
       - "7070:9090"
     volumes:
-      - ~/jp/configs/prometheus:/etc/prometheus
+      - /home/styrn/jp/configs/prometheus:/etc/prometheus
   ast_online:
     image: ast_online
     container_name: ast_online
