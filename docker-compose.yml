@@ -82,6 +82,9 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
   ast_online:
     image: ast_online
     container_name: ast_online
@@ -105,4 +108,6 @@ volumes:
   kafka_data:
     driver: local
   redis_data:
+    driver: local
+  grafana-data:
     driver: local
