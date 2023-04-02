@@ -85,12 +85,6 @@ services:
     volumes:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - grafana-data:/var/lib/grafana
-  ast_online:
-    image: ast_online
-    container_name: ast_online
-    ports:
-      - "7755:7755"
-
 
 volumes:
   postgres_data:
