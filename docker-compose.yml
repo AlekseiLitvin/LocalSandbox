@@ -12,6 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
   sonarqube:
+    # admin / root credentials
     image: sonarqube:community
     container_name: sonarqube
     depends_on:
@@ -85,6 +86,14 @@ services:
     volumes:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - grafana-data:/var/lib/grafana
+  pg_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    container_name: pg_exporter
+    ports:
+      - "9187:9187"
+    environment:
+      - DATA_SOURCE_NAME="postgresql://root:root@pg_db:5432/vardb?sslmode=disable"
+
 
 volumes:
   postgres_data:
