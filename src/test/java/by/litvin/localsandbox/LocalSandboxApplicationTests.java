@@ -13,4 +13,9 @@ class LocalSandboxApplicationTests {
         assertThat(2 + 2).isEqualTo(4);
     }
 
+    @Test
+    void fail() {
+        assertThat(2 + 2).isEqualTo(3);
+    }
+
 }
