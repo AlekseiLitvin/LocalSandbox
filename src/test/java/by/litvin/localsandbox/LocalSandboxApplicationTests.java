@@ -1,5 +1,6 @@
 package by.litvin.localsandbox;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,6 +15,7 @@ class LocalSandboxApplicationTests {
     }
 
     @Test
+    @Disabled
     void fail() {
         assertThat(2 + 2).isEqualTo(5);
     }
