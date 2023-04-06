@@ -27,6 +27,7 @@ public class BlobStorageServiceImpl implements BlobStorageService {
         this.blobStorageProperties = blobStorageProperties;
     }
 
+    // TODO don't invoke this method if there is no file in the request
     @SneakyThrows
     public String savePostMedia(File media) {
         String blobId = UUID.randomUUID().toString();
