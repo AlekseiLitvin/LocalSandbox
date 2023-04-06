@@ -1,6 +1,5 @@
 package by.litvin.localsandbox;
 
-import by.litvin.localsandbox.service.IntegrationTestBase;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

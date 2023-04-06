@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class AppUserServiceImpl implements AppUserService {
@@ -34,10 +32,5 @@ public class AppUserServiceImpl implements AppUserService {
     @Transactional
     public void deleteById(Long id) {
         appUserRepository.deleteById(id);
-    }
-
-    @Override
-    public List<AppUser> findByLastName(String lastName) {
-        return appUserRepository.findAllByLastName(lastName);
     }
 }

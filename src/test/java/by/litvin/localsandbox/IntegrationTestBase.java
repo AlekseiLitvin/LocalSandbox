@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.service;
+package by.litvin.localsandbox;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
