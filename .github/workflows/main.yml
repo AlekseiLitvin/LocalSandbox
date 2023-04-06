@@ -1,5 +1,5 @@
 name: Build workflow
-run-name: [${{ github.run_number }}] Push to branch ${{ github.ref_name }},
+run-name: "[${{ github.run_number }}] Push to branch ${{ github.ref_name }}"
 on: [push]
 jobs:
   build:
