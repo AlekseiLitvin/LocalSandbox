@@ -13,6 +13,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+      # Optional setp see https://docs.gradle.org/current/userguide/github-actions.html and https://github.com/gradle/gradle-build-action
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Execute Gradle build

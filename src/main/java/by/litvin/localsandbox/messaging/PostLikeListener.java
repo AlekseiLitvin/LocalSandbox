@@ -30,7 +30,7 @@ public class PostLikeListener {
      * Tries to consume the event 3 times, and the pushes it to dead-letter queue
      */
     @RetryableTopic(
-            attempts = "3",
+            attempts = "1",
             backoff = @Backoff(delay = 1000, multiplier = 2),
             autoCreateTopics = "true",
             numPartitions = "3",

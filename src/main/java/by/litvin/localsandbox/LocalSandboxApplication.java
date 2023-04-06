@@ -13,10 +13,4 @@ public class LocalSandboxApplication {
     public static void main(String[] args) {
         SpringApplication.run(LocalSandboxApplication.class, args);
     }
-
-    //    @Bean
-    //    public CommandLineRunner clr(KafkaTemplate<String, PostLikeEvent> kafkaTemplate) {
-    //
-    //    }
-
 }
