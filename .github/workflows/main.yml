@@ -1,5 +1,5 @@
 name: Build workflow
-run-name: head ref = ${{ github.head_ref }}, ref_name = ${{ github.ref_name }}, ${{ github.run_number }} branch CI run
+run-name: [${{ github.run_number }}] Push to branch ${{ github.ref_name }},
 on: [push]
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      # Optional setp see https://docs.gradle.org/current/userguide/github-actions.html and https://github.com/gradle/gradle-build-action
+      # Optional step see https://docs.gradle.org/current/userguide/github-actions.html and https://github.com/gradle/gradle-build-action
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Execute Gradle build
@@ -22,18 +22,3 @@ jobs:
         run: ./gradlew build
       - name: Run tests
         run: ./gradlew test
-
-
-
-#       TODO remove it
-#      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-#      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-#      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-#      - name: Check out repository code
-#        uses: actions/checkout@v3
-#      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-#      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-#      - name: List files in the repository
-#        run: |
-#          ls ${{ github.workspace }}
-#      - run: echo "🍏 This job's status is ${{ job.status }}."
