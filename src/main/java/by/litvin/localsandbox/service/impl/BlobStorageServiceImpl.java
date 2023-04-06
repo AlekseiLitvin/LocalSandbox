@@ -28,6 +28,7 @@ public class BlobStorageServiceImpl implements BlobStorageService {
     }
 
     // TODO don't invoke this method if there is no file in the request
+    // TODO rework this method to avoid creation of temp files
     @SneakyThrows
     public String savePostMedia(File media) {
         String blobId = UUID.randomUUID().toString();

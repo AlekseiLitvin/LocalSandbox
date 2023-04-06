@@ -26,7 +26,6 @@ class AppUserServiceTest {
 
     @Mock
     AppUserRepository appUserRepository;
-
     @Spy
     AppUserMapper appUserMapper = Mappers.getMapper(AppUserMapper.class);
 

@@ -27,7 +27,6 @@ class BlobStorageServiceTest {
 
     @Mock
     MinioClient minioClient;
-
     @Mock
     BlobStorageProperties blobStorageProperties;
 
@@ -54,8 +53,8 @@ class BlobStorageServiceTest {
 
         String savedMediaPath = blobStorageService.savePostMedia(new File(filePath));
 
-        assertThat(savedMediaPath).matches(
-                "^media_url/test\\.bucket/[a-fA-F0-9]{8}(-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}\\.jpg$");
+        final String uuidRegex = "[a-fA-F0-9]{8}(-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}";
+        assertThat(savedMediaPath).matches("^media_url/test\\.bucket/" + uuidRegex + "\\.jpg$");
         verify(minioClient).putObject(putObjectArgs.capture());
         PutObjectArgs putObjectValue = putObjectArgs.getValue();
         assertThat(putObjectValue.bucket()).isEqualTo(bucketName);

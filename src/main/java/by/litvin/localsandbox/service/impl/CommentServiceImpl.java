@@ -2,7 +2,6 @@ package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CreateCommentRequest;
 import by.litvin.localsandbox.data.CreateCommentResult;
-import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Comment;
 import by.litvin.localsandbox.model.Post;
@@ -27,7 +26,6 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final AppUserRepository appUserRepository;
-    private final CommentMapper commentMapper;
 
     @Override
     @Transactional
@@ -43,8 +41,7 @@ public class CommentServiceImpl implements CommentService {
             log.warn("Post with id {} not found, comment was not saved", postId);
             return new CreateCommentResult(CreateCommentResult.Status.POST_NOT_EXISTS);
         } else {
-            Comment comment = commentRepository.save(
-                    new Comment(createCommentRequest.getText(), appUser.get(), post.get()));
+            Comment comment = commentRepository.save(new Comment(createCommentRequest.getText(), appUser.get(), post.get()));
             return new CreateCommentResult(comment, CreateCommentResult.Status.CREATED);
         }
     }
