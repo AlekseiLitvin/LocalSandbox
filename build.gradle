@@ -62,3 +62,16 @@ sonarqube {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.register("unitTest", Test) {
+    useJUnitPlatform {
+        excludeTags "integration_test"
+    }
+}
+
+tasks.register("integrationTest", Test) {
+    useJUnitPlatform {
+        includeTags "integration_test"
+    }
+}
+
