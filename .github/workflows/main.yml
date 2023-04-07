@@ -28,7 +28,7 @@ jobs:
         uses: actions/cache@v3
         with:
           key: cached-build-${{github.sha}}
-          path: .
+          path: build/
 
   sonarqube:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v3
         with:
           key: cached-build-${{github.sha}}
-          path: .
+          path: build/
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
