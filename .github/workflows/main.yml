@@ -24,7 +24,8 @@ jobs:
         run: ./gradlew build
       - name: Run tests
         run: ./gradlew test
-      - uses: actions/upload-artifact@v3
+      - name: Upload Gradle binaries
+        uses: actions/upload-artifact@v3
         with:
           name: gradle_binaries
           path: build/classes
@@ -39,10 +40,11 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
-      - name: Download a single artifact
+      - name: Download gradle binaries
         uses: actions/download-artifact@v3
         with:
           name: gradle_binaries
+          path: build/classes
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
