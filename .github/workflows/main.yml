@@ -24,22 +24,6 @@ jobs:
         run: ./gradlew build
       - name: Run tests
         run: ./gradlew test
-      - name: Cache build
-        uses: actions/cache@v3
-        with:
-          key: cached-build-${{github.sha}}
-          path: build/
-
-  sonarqube:
-    runs-on: ubuntu-latest
-    needs:
-      - build
-    steps:
-      - name: Restore cached build
-        uses: actions/cache@v3
-        with:
-          key: cached-build-${{github.sha}}
-          path: build/
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
@@ -54,3 +38,9 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           scanMetadataReportFile: build/sonar/report-task.txt
+
+#  sonarqube:
+#    runs-on: ubuntu-latest
+#    needs:
+#      - build
+#    steps:
