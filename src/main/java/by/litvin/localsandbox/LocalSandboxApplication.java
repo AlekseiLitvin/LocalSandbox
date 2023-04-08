@@ -11,7 +11,6 @@ import org.springframework.cache.annotation.EnableCaching;
 public class LocalSandboxApplication {
 
     public static void main(String[] args) {
-        String Hello = "";
         SpringApplication.run(LocalSandboxApplication.class, args);
     }
 }
