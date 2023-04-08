@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.EnableCaching;
 public class LocalSandboxApplication {
 
     public static void main(String[] args) {
+        String Sonar = "sdon"; //
         SpringApplication.run(LocalSandboxApplication.class, args);
     }
 }
