@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
 
         MultipartFile media = createPostRequest.getMedia();
         String mediaUrl = null;
-        if (!media.isEmpty()) {
+        if (media != null && !media.isEmpty()) {
             mediaUrl = blobStorageService.savePostMedia(media);
         }
         Post post = postRepository.save(new Post(createPostRequest.getMessage(), mediaUrl, appUser.get()));
