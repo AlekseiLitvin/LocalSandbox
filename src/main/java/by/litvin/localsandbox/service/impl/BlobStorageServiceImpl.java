@@ -10,8 +10,8 @@ import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.UUID;
 
 @Service
@@ -27,20 +27,18 @@ public class BlobStorageServiceImpl implements BlobStorageService {
         this.blobStorageProperties = blobStorageProperties;
     }
 
-    // TODO don't invoke this method if there is no file in the request
-    // TODO rework this method to avoid creation of temp files
     @SneakyThrows
-    public String savePostMedia(File media) {
+    public String savePostMedia(MultipartFile media) {
         String blobId = UUID.randomUUID().toString();
 
-        String mediaExtension = Files.getFileExtension(media.getName());
-        long mediaSize = media.length();
+        String mediaExtension = Files.getFileExtension(media.getOriginalFilename());
+        long mediaSize = media.getSize();
 
         try {
             String mediaFileName = blobId + "." + mediaExtension;
             PutObjectArgs putRequest = PutObjectArgs.builder()
                     .bucket(blobStorageProperties.getMediaBucketName())
-                    .stream(Files.asByteSource(media).openStream(), mediaSize, -1)
+                    .stream(media.getInputStream(), mediaSize, -1)
                     .contentType("image/jpeg")
                     .object(mediaFileName)
                     .build();
@@ -51,8 +49,8 @@ public class BlobStorageServiceImpl implements BlobStorageService {
                     mediaFileName);
         } catch (MinioException e) {
             log.error("Error during post media saving", e);
+            throw new MinioException("Post media was not saved");
         }
-        return null;
     }
 
 }

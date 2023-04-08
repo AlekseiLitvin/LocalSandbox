@@ -1,8 +1,8 @@
 package by.litvin.localsandbox.service;
 
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface BlobStorageService {
 
-    String savePostMedia(File media);
+    String savePostMedia(MultipartFile media);
 }
