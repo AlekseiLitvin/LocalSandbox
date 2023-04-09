@@ -14,7 +14,4 @@ public class LocalSandboxApplication {
         SpringApplication.run(LocalSandboxApplication.class, args);
     }
 
-    public String newCoolMethod() {
-        return "sonar";
-    }
 }
