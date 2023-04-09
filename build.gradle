@@ -84,7 +84,8 @@ tasks.register("integrationTest", Test) {
 jacocoTestReport {
     dependsOn test
     reports {
-        xml.enabled true
+        xml.required = true
+        html.required = true
     }
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
