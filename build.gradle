@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.6'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'org.sonarqube' version '3.5.0.2730'
+    id 'jacoco'
     id 'java'
 }
 
@@ -53,25 +54,37 @@ dependencies {
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "LocalSandbox"
-        property "sonar.host.url", "http://ol.local:9000"
-        property "sonar.login", "sqp_1bc37056eabcb802a122b9f2a14e7d3c52f77cf4"
+        property "sonar.projectKey", "AlekseiLitvin_LocalSandbox"
+        property "sonar.organization", "localsandbox"
+        property "sonar.host.url", "https://sonarcloud.io"
+        // property "sonar.login" should be set via SONAR_TOKEN env variable
     }
+}
+tasks.named('sonar').configure {
+    dependsOn test
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
 tasks.register("unitTest", Test) {
     useJUnitPlatform {
         excludeTags "integration_test"
     }
+    finalizedBy jacocoTestReport
 }
 
 tasks.register("integrationTest", Test) {
     useJUnitPlatform {
         includeTags "integration_test"
     }
+    finalizedBy jacocoTestReport
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
