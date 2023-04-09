@@ -34,15 +34,4 @@ public class AppUserServiceImpl implements AppUserService {
         appUserRepository.deleteById(id);
     }
 
-    public String  newMe1() {
-        return "sd";
-    }
-
-    public String  newMe2() {
-        return "sdds";
-    }
-
-    public String  newMe3() {
-        return "sdsd";
-    }
 }
