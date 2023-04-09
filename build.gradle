@@ -73,18 +73,30 @@ tasks.register("unitTest", Test) {
     useJUnitPlatform {
         excludeTags "integration_test"
     }
-    finalizedBy jacocoTestReport
 }
 
 tasks.register("integrationTest", Test) {
     useJUnitPlatform {
         includeTags "integration_test"
     }
-    finalizedBy jacocoTestReport
 }
 
 jacocoTestReport {
+    dependsOn test
     reports {
         xml.enabled true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'by/litvin/localsandbox/model/*',
+                    'by/litvin/localsandbox/mapper/*',
+                    'by/litvin/localsandbox/data/*',
+                    'by/litvin/localsandbox/data/*',
+                    'by/litvin/localsandbox/messaging/event/*',
+                    'by/litvin/localsandbox/messaging/serializer/*',
+                    'by/litvin/localsandbox/data/config/*',
+            ])
+        }))
     }
 }
