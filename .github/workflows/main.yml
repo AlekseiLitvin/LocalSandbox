@@ -24,11 +24,6 @@ jobs:
         run: ./gradlew build
       - name: Run tests
         run: ./gradlew test
-      - name: Upload Gradle binaries
-        uses: actions/upload-artifact@v3
-        with:
-          name: gradle_binaries
-          path: build/classes
 
   sonarqube:
     runs-on: ubuntu-latest
@@ -40,11 +35,6 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
-      - name: Download gradle binaries
-        uses: actions/download-artifact@v3
-        with:
-          name: gradle_binaries
-          path: build/classes
       - name: SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -55,6 +45,8 @@ jobs:
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
         timeout-minutes: 5
+        with:
+          scanMetadataReportFile: build/sonar/report-task.txt
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
