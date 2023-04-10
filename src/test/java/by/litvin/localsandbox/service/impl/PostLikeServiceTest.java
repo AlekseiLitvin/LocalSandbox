@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.service;
+package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.messaging.event.PostLikeEvent;
 import by.litvin.localsandbox.model.AppUser;
@@ -7,7 +7,6 @@ import by.litvin.localsandbox.model.PostLike;
 import by.litvin.localsandbox.repository.AppUserRepository;
 import by.litvin.localsandbox.repository.PostLikeRepository;
 import by.litvin.localsandbox.repository.PostRepository;
-import by.litvin.localsandbox.service.impl.PostLikeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

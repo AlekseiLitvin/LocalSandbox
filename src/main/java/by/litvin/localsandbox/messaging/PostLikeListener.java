@@ -39,7 +39,7 @@ public class PostLikeListener {
             topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE
     )
     @KafkaListener(id = "post_like_listener", topics = "post_like")
-    public void list(@Payload PostLikeEvent postLikeEvent) {
+    public void consumeLikeEvent(@Payload PostLikeEvent postLikeEvent) {
         postLikeService.saveEvent(postLikeEvent);
     }
 

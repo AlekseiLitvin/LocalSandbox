@@ -1,7 +1,6 @@
-package by.litvin.localsandbox.service;
+package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.config.BlobStorageProperties;
-import by.litvin.localsandbox.service.impl.BlobStorageServiceImpl;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.errors.InsufficientDataException;

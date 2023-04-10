@@ -1,10 +1,9 @@
-package by.litvin.localsandbox.service;
+package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CreateUserRequest;
 import by.litvin.localsandbox.mapper.AppUserMapper;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.repository.AppUserRepository;
-import by.litvin.localsandbox.service.impl.AppUserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;

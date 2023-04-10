@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.service;
+package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CreateCommentRequest;
 import by.litvin.localsandbox.data.CreateCommentResult;
@@ -8,7 +8,6 @@ import by.litvin.localsandbox.model.Post;
 import by.litvin.localsandbox.repository.AppUserRepository;
 import by.litvin.localsandbox.repository.CommentRepository;
 import by.litvin.localsandbox.repository.PostRepository;
-import by.litvin.localsandbox.service.impl.CommentServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

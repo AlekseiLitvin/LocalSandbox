@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.service;
+package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CreatePostRequest;
 import by.litvin.localsandbox.data.CreatePostResult;
@@ -6,7 +6,7 @@ import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Post;
 import by.litvin.localsandbox.repository.AppUserRepository;
 import by.litvin.localsandbox.repository.PostRepository;
-import by.litvin.localsandbox.service.impl.PostServiceImpl;
+import by.litvin.localsandbox.service.BlobStorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
