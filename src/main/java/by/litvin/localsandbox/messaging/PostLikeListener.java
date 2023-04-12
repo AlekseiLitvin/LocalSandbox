@@ -13,9 +13,9 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.retry.annotation.Backoff;
-import org.springframework.stereotype.Component;
 
-@Component
+// TODO enable when kafka tests will be written
+//@Component
 public class PostLikeListener {
 
     private static final Logger log = LoggerFactory.getLogger(PostLikeListener.class);
