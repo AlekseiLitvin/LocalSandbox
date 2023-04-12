@@ -4,6 +4,7 @@ import by.litvin.localsandbox.data.CreateUserRequest;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.service.AppUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +24,16 @@ public class AppUserController {
     @GetMapping("/{id}")
     public ResponseEntity<AppUser> findById(@PathVariable Long id) {
         AppUser user = appUserService.getById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(user);
     }
 
     @PostMapping
     public ResponseEntity<AppUser> create(@RequestBody CreateUserRequest createUserRequest) {
-        AppUser user = appUserService.create(createUserRequest);
-        return ResponseEntity.ok(user);
+        AppUser createdUser = appUserService.create(createUserRequest);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

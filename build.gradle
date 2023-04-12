@@ -21,10 +21,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
+    implementation 'org.springframework.kafka:spring-kafka:2.9.2'
 
     implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'org.springframework.kafka:spring-kafka:2.9.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+
     runtimeOnly 'org.postgresql:postgresql'
 
     // MapStruct mapper
