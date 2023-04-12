@@ -18,8 +18,7 @@ public class IntegrationTestBase {
     public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres")
             .withDatabaseName("test_db")
             .withUsername("pg")
-            .withPassword("root")
-            .withExposedPorts(5432);
+            .withPassword("root");
 
     @DynamicPropertySource
     public static void initDb(DynamicPropertyRegistry registry) {

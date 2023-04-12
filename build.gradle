@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.6'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'org.sonarqube' version '4.0.0.2929'
+    id 'org.liquibase.gradle' version '2.2.0'
     id 'jacoco'
     id 'java'
 }
@@ -41,6 +42,13 @@ dependencies {
     // Prometheus metrics storage
     implementation 'io.micrometer:micrometer-registry-prometheus:1.10.5'
 
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.8.0'
+    liquibaseRuntime 'info.picocli:picocli:4.6.3'
+    liquibaseRuntime 'org.yaml:snakeyaml:1.33' // to run tasks from gradle
+    liquibaseRuntime 'org.postgresql:postgresql'
+    implementation 'org.yaml:snakeyaml:2.0' // to run liquibase from Spring
+    implementation 'org.liquibase:liquibase-core:4.20.0'
+
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
@@ -50,6 +58,18 @@ dependencies {
     testImplementation "org.testcontainers:postgresql:1.18.0"
     testImplementation "org.testcontainers:kafka:1.18.0"
 
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/resources/db/changelogs-list.yaml'
+            url 'jdbc:postgresql://ol.local:5432/vardb'
+            username 'root'
+            password 'root'
+            driver 'org.postgresql.Driver'
+        }
+    }
 }
 
 sonarqube {
