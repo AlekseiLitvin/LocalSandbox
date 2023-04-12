@@ -118,6 +118,7 @@ jacocoTestReport {
                     'by/litvin/localsandbox/messaging/event/*',
                     'by/litvin/localsandbox/messaging/serializer/*',
                     'by/litvin/localsandbox/config/*',
+                    'by/litvin/localsandbox/LocalSandboxApplication.*'
             ])
         }))
     }
