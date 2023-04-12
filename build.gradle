@@ -78,6 +78,16 @@ sonarqube {
         property "sonar.projectKey", "AlekseiLitvin_LocalSandbox"
         property "sonar.organization", "localsandbox"
         property "sonar.host.url", "https://sonarcloud.io"
+        def projectPath = "**/*by/litvin/localsandbox"
+        def exclusionList = [
+                "${projectPath}/model/*",
+                "${projectPath}/config/*",
+                "${projectPath}/data/*",
+                "${projectPath}/messaging/serializer/*",
+                "${projectPath}/messaging/event",
+                "${projectPath}/LocalSandboxApplication.*"
+        ].join(', ')
+        property "sonar.coverage.exclusions", exclusionList
         // property "sonar.login" should be set via SONAR_TOKEN env variable
     }
 }
@@ -113,7 +123,6 @@ jacocoTestReport {
             fileTree(dir: it, exclude: [
                     'by/litvin/localsandbox/model/*',
                     'by/litvin/localsandbox/mapper/*',
-                    'by/litvin/localsandbox/data/*',
                     'by/litvin/localsandbox/data/*',
                     'by/litvin/localsandbox/messaging/event/*',
                     'by/litvin/localsandbox/messaging/serializer/*',
