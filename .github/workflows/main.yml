@@ -21,7 +21,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Gradle build
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
 
   sonarqube:
     runs-on: ubuntu-latest
