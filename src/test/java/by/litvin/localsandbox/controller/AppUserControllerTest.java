@@ -4,7 +4,6 @@ import by.litvin.localsandbox.IntegrationTestBase;
 import by.litvin.localsandbox.data.CreateUserRequest;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.repository.AppUserRepository;
-import by.litvin.localsandbox.service.AppUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,18 +27,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AppUserControllerTest extends IntegrationTestBase {
 
     @Autowired
-    AppUserService appUserService;
-    @Autowired
     AppUserRepository appUserRepository;
     @Autowired
     private MockMvc mockMvc;
 
-    private Long testUserId;
+    private AppUser appUser;
+    private AppUser testUser;
 
     @BeforeEach
     public void setUp() {
-        AppUser testUser = appUserRepository.save(new AppUser("John", "Smith", "abc@cba.com", "123-321-321"));
-        testUserId = testUser.getId();
+        appUser = new AppUser("John", "Smith", "abc@cba.com", "123-321-321");
+        testUser = appUserRepository.save(appUser);
     }
 
     @AfterEach
@@ -49,17 +47,17 @@ class AppUserControllerTest extends IntegrationTestBase {
 
     @Test
     void findByIdUserExists() throws Exception {
-        mockMvc.perform(get("/app_user/{testUserId}", testUserId))
+        mockMvc.perform(get("/app_users/{testUserId}", testUser.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", is("John")))
-                .andExpect(jsonPath("$.lastName", is("Smith")))
-                .andExpect(jsonPath("$.email", is("abc@cba.com")))
-                .andExpect(jsonPath("$.phone", is("123-321-321")));
+                .andExpect(jsonPath("$.firstName", is(appUser.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(appUser.getLastName())))
+                .andExpect(jsonPath("$.email", is(appUser.getEmail())))
+                .andExpect(jsonPath("$.phone", is(appUser.getPhone())));
     }
 
     @Test
     void findByIdUserNotExists() throws Exception {
-        mockMvc.perform(get("/app_user/100000"))
+        mockMvc.perform(get("/app_users/100000"))
                 .andExpect(status().isNotFound());
     }
 
@@ -72,7 +70,7 @@ class AppUserControllerTest extends IntegrationTestBase {
         createUserRequest.setPhone("777-777-777");
 
         mockMvc.perform(
-                        post("/app_user")
+                        post("/app_users")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(new ObjectMapper().writeValueAsString(createUserRequest))
                 )
@@ -82,7 +80,8 @@ class AppUserControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.lastName").value(createUserRequest.getLastName()))
                 .andExpect(jsonPath("$.phone").value(createUserRequest.getPhone()));
 
-        Optional<AppUser> createdUserOpt = appUserRepository.findById(2L);
+        // SQL sequence increments ID by 1
+        Optional<AppUser> createdUserOpt = appUserRepository.findById(appUser.getId() + 1);
         assertThat(createdUserOpt).isNotEmpty();
         AppUser createdUser = createdUserOpt.get();
         assertThat(createdUser.getEmail()).isEqualTo(createUserRequest.getEmail());
@@ -93,10 +92,10 @@ class AppUserControllerTest extends IntegrationTestBase {
 
     @Test
     void deleteById() throws Exception {
-        mockMvc.perform(delete("/app_user/{userId}", testUserId))
+        mockMvc.perform(delete("/app_users/{userId}", testUser.getId()))
                 .andExpect(status().isNoContent());
 
-        Optional<AppUser> deletedUser = appUserRepository.findById(testUserId);
+        Optional<AppUser> deletedUser = appUserRepository.findById(testUser.getId());
         assertThat(deletedUser).isEmpty();
     }
 }

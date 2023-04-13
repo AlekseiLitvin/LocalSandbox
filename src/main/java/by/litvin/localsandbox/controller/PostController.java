@@ -25,6 +25,9 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<Post> findById(@PathVariable Long id) {
         Post post = postService.getById(id);
+        if (post == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(post);
     }
 

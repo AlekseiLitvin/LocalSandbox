@@ -24,7 +24,6 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka:2.9.2'
 
     implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 
     runtimeOnly 'org.postgresql:postgresql'
 
@@ -84,7 +83,8 @@ sonarqube {
                 "${projectPath}/config/*",
                 "${projectPath}/data/*",
                 "${projectPath}/messaging/serializer/*",
-                "${projectPath}/messaging/event",
+                "${projectPath}/messaging/event/*",
+                "${projectPath}/mapper/*",
                 "${projectPath}/LocalSandboxApplication.*"
         ].join(', ')
         property "sonar.coverage.exclusions", exclusionList
