@@ -17,7 +17,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,8 +26,11 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,6 +47,7 @@ class PostControllerTest extends IntegrationTestBase {
     AppUserRepository appUserRepository;
     @Autowired
     private MockMvc mockMvc;
+
     private Post testPost;
     private AppUser testAppUser;
 
@@ -78,16 +81,22 @@ class PostControllerTest extends IntegrationTestBase {
 
     @Test
     void testCreate() throws Exception {
+        String mediaUrl = "media_url";
+        when(blobStorageService.savePostMedia(any())).thenReturn(mediaUrl);
+
         String mediaFileName = "tree.jpg";
         Path resourceDirectory = Paths.get("src", "test", "resources", "data", mediaFileName);
         byte[] mediaBytes = Files.readAllBytes(resourceDirectory);
-        MultipartFile media = new MockMultipartFile(mediaFileName, mediaFileName, "image/jpeg", mediaBytes);
+        MockMultipartFile media = new MockMultipartFile("file", mediaFileName, "image/jpeg", mediaBytes);
 
-        String mediaUrl = "media_url";
-        when(blobStorageService.savePostMedia(any())).thenReturn(mediaUrl);
+        mockMvc.perform(multipart("/posts/image").file(media))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.mediaUrl").value(mediaUrl));
+        verify(blobStorageService).savePostMedia(media);
+
         CreatePostRequest createPostRequest = new CreatePostRequest();
         createPostRequest.setUserId(testAppUser.getId());
-        createPostRequest.setMedia(media);
+        createPostRequest.setMediaUrl(mediaUrl);
         createPostRequest.setMessage("message");
 
         mockMvc.perform(post("/posts/")
@@ -96,23 +105,51 @@ class PostControllerTest extends IntegrationTestBase {
                         .content(new ObjectMapper().writeValueAsString(createPostRequest))
                 )
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(testPost.getId()))
-                .andExpect(jsonPath("$.mediaUrl").value(testPost.getMediaUrl()))
-                .andExpect(jsonPath("$.message").value(testPost.getMessage()))
-                .andExpect(jsonPath("$.appUser.id").value(testAppUser.getId()));
+                .andExpect(jsonPath("$.post.id").value(testPost.getId() + 1))
+                .andExpect(jsonPath("$.post.mediaUrl").value(mediaUrl))
+                .andExpect(jsonPath("$.post.message").value(createPostRequest.getMessage()))
+                .andExpect(jsonPath("$.post.appUser.id").value(createPostRequest.getUserId()));
 
         // SQL sequence increments ID by 1
         Optional<Post> postOpt = postRepository.findById(testPost.getId() + 1);
         assertThat(postOpt).isNotEmpty();
         Post createdPost = postOpt.get();
-        assertThat(createdPost.getId()).isEqualTo(testPost.getId());
-        assertThat(createdPost.getMediaUrl()).isEqualTo(testPost.getMediaUrl());
-        assertThat(createdPost.getMessage()).isEqualTo(testPost.getMessage());
+        assertThat(createdPost.getMediaUrl()).isEqualTo(createPostRequest.getMediaUrl());
+        assertThat(createdPost.getMessage()).isEqualTo(createPostRequest.getMessage());
         assertThat(createdPost.getCreationTime()).isBeforeOrEqualTo(LocalDateTime.now());
-        assertThat(createdPost.getAppUser().getId()).isEqualTo(testAppUser.getId());
+        assertThat(createdPost.getAppUser().getId()).isEqualTo(createPostRequest.getUserId());
     }
 
     @Test
-    void deleteById() {
+    void testCreateUserNotExists() throws Exception {
+        CreatePostRequest createPostRequest = new CreatePostRequest();
+        createPostRequest.setUserId(1111L);
+        createPostRequest.setMessage("message");
+
+        mockMvc.perform(post("/posts/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(createPostRequest))
+                )
+                .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void deleteById() throws Exception {
+        mockMvc.perform(delete("/posts/{id}", testPost.getId()))
+                .andExpect(status().isNoContent());
+
+        Optional<Post> deletedPost = postRepository.findById(testPost.getId());
+        assertThat(deletedPost).isEmpty();
+    }
+
+    @Test
+    void testDeleteImage() throws Exception {
+        mockMvc.perform(delete("/posts/{id}", testPost.getId()))
+                .andExpect(status().isNoContent());
+
+        Optional<Post> deletedPost = postRepository.findById(testPost.getId());
+        assertThat(deletedPost).isEmpty();
+    }
+
 }

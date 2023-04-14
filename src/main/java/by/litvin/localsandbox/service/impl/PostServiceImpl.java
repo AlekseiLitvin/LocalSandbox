@@ -2,6 +2,7 @@ package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CreatePostRequest;
 import by.litvin.localsandbox.data.CreatePostResult;
+import by.litvin.localsandbox.data.UploadImageResult;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Post;
 import by.litvin.localsandbox.repository.AppUserRepository;
@@ -36,12 +37,7 @@ public class PostServiceImpl implements PostService {
             return new CreatePostResult(CreatePostResult.Status.USER_NOT_EXISTS);
         }
 
-        MultipartFile media = createPostRequest.getMedia();
-        String mediaUrl = null;
-        if (media != null && !media.isEmpty()) {
-            mediaUrl = blobStorageService.savePostMedia(media);
-        }
-        Post post = postRepository.save(new Post(createPostRequest.getMessage(), mediaUrl, appUser.get()));
+        Post post = postRepository.save(new Post(createPostRequest.getMessage(), createPostRequest.getMediaUrl(), appUser.get()));
         return new CreatePostResult(post, CreatePostResult.Status.CREATED);
     }
 
@@ -54,5 +50,16 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void deleteById(Long id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public UploadImageResult uploadImage(MultipartFile image) {
+        String mediaUrl = blobStorageService.savePostMedia(image);
+        return new UploadImageResult(mediaUrl);
+    }
+
+    @Override
+    public void deleteImage(String name) {
+        blobStorageService.deleteImage(name);
     }
 }

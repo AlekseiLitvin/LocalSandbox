@@ -5,6 +5,7 @@ import by.litvin.localsandbox.service.BlobStorageService;
 import com.google.common.io.Files;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import io.minio.errors.MinioException;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ public class BlobStorageServiceImpl implements BlobStorageService {
     }
 
     @SneakyThrows
+    @Override
     public String savePostMedia(MultipartFile media) {
         String blobId = UUID.randomUUID().toString();
 
@@ -51,6 +53,16 @@ public class BlobStorageServiceImpl implements BlobStorageService {
             log.error("Error during post media saving", e);
             throw new MinioException("Post media was not saved");
         }
+    }
+
+    @SneakyThrows
+    @Override
+    public void deleteImage(String name) {
+        RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder()
+                .bucket(blobStorageProperties.getMediaBucketName())
+                .object(name)
+                .build();
+        minioClient.removeObject(removeObjectArgs);
     }
 
 }

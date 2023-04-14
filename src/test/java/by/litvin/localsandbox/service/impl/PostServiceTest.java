@@ -7,19 +7,13 @@ import by.litvin.localsandbox.model.Post;
 import by.litvin.localsandbox.repository.AppUserRepository;
 import by.litvin.localsandbox.repository.PostRepository;
 import by.litvin.localsandbox.service.BlobStorageService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,14 +37,6 @@ class PostServiceTest {
 
     MultipartFile media;
 
-    @BeforeEach
-    public void setUp() throws IOException {
-        String mediaFileName = "tree.jpg";
-        Path resourceDirectory = Paths.get("src", "test", "resources", "data", mediaFileName);
-        byte[] mediaBytes = Files.readAllBytes(resourceDirectory);
-        media = new MockMultipartFile(mediaFileName, mediaFileName, "image/jpeg", mediaBytes);
-    }
-
     @Test
     void testCreatePost() {
         AppUser user = new AppUser("John", "Smith", "abc@mail.com", "123-321-321");
@@ -58,11 +44,10 @@ class PostServiceTest {
         String mediaUrl = "path_to_media";
         Post post = new Post("post message", mediaUrl, user);
         CreatePostRequest createPostRequest = new CreatePostRequest();
-        createPostRequest.setMedia(media);
+        createPostRequest.setMediaUrl(mediaUrl);
         createPostRequest.setMessage("test message");
         createPostRequest.setUserId(userId);
         when(appUserRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(blobStorageService.savePostMedia(any())).thenReturn(mediaUrl);
         when(postRepository.save(any())).thenReturn(post);
 
         CreatePostResult createPostResult = postService.create(createPostRequest);
@@ -89,7 +74,6 @@ class PostServiceTest {
         long userId = 1L;
         Post post = new Post("post message", null, user);
         CreatePostRequest createPostRequest = new CreatePostRequest();
-        createPostRequest.setMedia(null);
         createPostRequest.setMessage("test message");
         createPostRequest.setUserId(userId);
         when(appUserRepository.findById(userId)).thenReturn(Optional.of(user));
