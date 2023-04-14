@@ -13,9 +13,10 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.retry.annotation.Backoff;
+import org.springframework.stereotype.Component;
 
 // TODO enable when kafka tests will be written
-//@Component
+@Component
 public class PostLikeListener {
 
     private static final Logger log = LoggerFactory.getLogger(PostLikeListener.class);
@@ -27,10 +28,10 @@ public class PostLikeListener {
     }
 
     /**
-     * Tries to consume the event 3 times, and the pushes it to dead-letter queue
+     * Tries to consume the event 3 times, and then pushes it to dead-letter queue
      */
     @RetryableTopic(
-            attempts = "1",
+            attempts = "3",
             backoff = @Backoff(delay = 1000, multiplier = 2),
             autoCreateTopics = "true",
             numPartitions = "3",
