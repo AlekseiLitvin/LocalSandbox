@@ -7,15 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.RetryableTopic;
-import org.springframework.kafka.retrytopic.TopicSuffixingStrategy;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
-// TODO enable when kafka tests will be written
 @Component
 public class PostLikeListener {
 
@@ -30,15 +26,15 @@ public class PostLikeListener {
     /**
      * Tries to consume the event 3 times, and then pushes it to dead-letter queue
      */
-    @RetryableTopic(
-            attempts = "3",
-            backoff = @Backoff(delay = 1000, multiplier = 2),
-            autoCreateTopics = "true",
-            numPartitions = "3",
-            retryTopicSuffix = "-retry",
-            dltTopicSuffix = ".DLT",
-            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE
-    )
+//    @RetryableTopic(
+//            attempts = "3",
+//            backoff = @Backoff(delay = 1000, multiplier = 2),
+//            autoCreateTopics = "true",
+//            numPartitions = "3",
+//            retryTopicSuffix = "-retry",
+//            dltTopicSuffix = ".DLT",
+//            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE
+//    )
     @KafkaListener(id = "post_like_listener", topics = "post_like")
     public void consumeLikeEvent(@Payload PostLikeEvent postLikeEvent) {
         postLikeService.saveEvent(postLikeEvent);

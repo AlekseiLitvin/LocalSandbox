@@ -11,8 +11,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Tag("integration_test")
 @Testcontainers
 @SpringBootTest
-// TODO enable when kafka tests will be written
-//@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 public class IntegrationTestBase {
     @Container
     public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres")
