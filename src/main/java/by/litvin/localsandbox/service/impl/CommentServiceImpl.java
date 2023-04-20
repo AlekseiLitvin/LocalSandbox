@@ -1,7 +1,8 @@
 package by.litvin.localsandbox.service.impl;
 
+import by.litvin.localsandbox.data.CommentResponse;
 import by.litvin.localsandbox.data.CreateCommentRequest;
-import by.litvin.localsandbox.data.CreateCommentResult;
+import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Comment;
 import by.litvin.localsandbox.model.Post;
@@ -11,8 +12,6 @@ import by.litvin.localsandbox.repository.PostRepository;
 import by.litvin.localsandbox.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,35 +25,36 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final AppUserRepository appUserRepository;
+    private final CommentMapper commentMapper;
 
     @Override
     @Transactional
-    public CreateCommentResult create(CreateCommentRequest createCommentRequest) {
+    public CommentResponse create(CreateCommentRequest createCommentRequest) {
         Long postId = createCommentRequest.getPostId();
         Long userId = createCommentRequest.getUserId();
         Optional<Post> post = postRepository.findById(postId);
         Optional<AppUser> appUser = appUserRepository.findById(userId);
         if (appUser.isEmpty()) {
             log.warn("User with id {} not found, comment was not saved", userId);
-            return new CreateCommentResult(CreateCommentResult.Status.USER_NOT_EXISTS);
+            throw new IllegalArgumentException("App user with this ID not exists");
         } else if (post.isEmpty()) {
             log.warn("Post with id {} not found, comment was not saved", postId);
-            return new CreateCommentResult(CreateCommentResult.Status.POST_NOT_EXISTS);
+            throw new IllegalArgumentException("Post with this ID not exists");
         } else {
             Comment comment = commentRepository.save(new Comment(createCommentRequest.getText(), appUser.get(), post.get()));
-            return new CreateCommentResult(comment, CreateCommentResult.Status.CREATED);
+            return commentMapper.toCommentResponse(comment);
         }
     }
 
     @Override
-    @Cacheable(value = "comments", key = "#id")
+//    @Cacheable(value = "comments", key = "#id")
     public Comment getById(Long id) {
         return commentRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
-    @CacheEvict(value = "users", key = "#id")
+//    @CacheEvict(value = "users", key = "#id")
     public void deleteById(Long id) {
         commentRepository.deleteById(id);
     }

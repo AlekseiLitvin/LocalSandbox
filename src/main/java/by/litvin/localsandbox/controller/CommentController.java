@@ -2,10 +2,10 @@ package by.litvin.localsandbox.controller;
 
 import by.litvin.localsandbox.data.CommentResponse;
 import by.litvin.localsandbox.data.CreateCommentRequest;
-import by.litvin.localsandbox.data.CreateCommentResult;
 import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +30,9 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateCommentResult> create(@RequestBody CreateCommentRequest createCommentRequest) {
-        CreateCommentResult createCommentResult = commentService.create(createCommentRequest);
-        if (createCommentResult.getStatus() == CreateCommentResult.Status.USER_NOT_EXISTS ||
-                createCommentResult.getStatus() == CreateCommentResult.Status.POST_NOT_EXISTS) {
-            return ResponseEntity.badRequest().body(createCommentResult);
-        } else {
-            return ResponseEntity.ok(createCommentResult);
-        }
+    public ResponseEntity<CommentResponse> create(@RequestBody CreateCommentRequest createCommentRequest) {
+        CommentResponse createCommentResult = commentService.create(createCommentRequest);
+        return new ResponseEntity<>(createCommentResult, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

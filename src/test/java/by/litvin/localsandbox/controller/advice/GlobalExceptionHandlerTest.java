@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.controller.exception;
+package by.litvin.localsandbox.controller.advice;
 
 import io.minio.errors.MinioException;
 import org.junit.jupiter.api.Test;

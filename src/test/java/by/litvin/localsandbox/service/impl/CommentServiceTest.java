@@ -1,7 +1,7 @@
 package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CreateCommentRequest;
-import by.litvin.localsandbox.data.CreateCommentResult;
+import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Comment;
 import by.litvin.localsandbox.model.Post;
@@ -13,11 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
@@ -33,6 +35,8 @@ class CommentServiceTest {
     PostRepository postRepository;
     @Mock
     AppUserRepository appUserRepository;
+    @Spy
+    CommentMapper commentMapper;
 
     @InjectMocks
     CommentServiceImpl commentService;
@@ -52,9 +56,8 @@ class CommentServiceTest {
         when(postRepository.findById(postId)).thenReturn(Optional.of(post));
         when(appUserRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        CreateCommentResult createCommentResult = commentService.create(createCommentRequest);
+        commentService.create(createCommentRequest);
 
-        assertThat(createCommentResult.getStatus()).isEqualTo(CreateCommentResult.Status.CREATED);
         verify(commentRepository).save(commentCaptor.capture());
         Comment commentValue = commentCaptor.getValue();
         assertThat(commentValue.getText()).isEqualTo(commentText);
@@ -71,9 +74,7 @@ class CommentServiceTest {
         createCommentRequest.setUserId(userId);
         when(appUserRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        CreateCommentResult createCommentResult = commentService.create(createCommentRequest);
-
-        assertThat(createCommentResult.getStatus()).isEqualTo(CreateCommentResult.Status.USER_NOT_EXISTS);
+        assertThrows(IllegalArgumentException.class, () -> commentService.create(createCommentRequest));
         verify(commentRepository, never()).save(any());
     }
 
@@ -87,9 +88,8 @@ class CommentServiceTest {
         when(appUserRepository.findById(userId)).thenReturn(Optional.of(new AppUser()));
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        CreateCommentResult createCommentResult = commentService.create(createCommentRequest);
+        assertThrows(IllegalArgumentException.class, () -> commentService.create(createCommentRequest));
 
-        assertThat(createCommentResult.getStatus()).isEqualTo(CreateCommentResult.Status.POST_NOT_EXISTS);
         verify(commentRepository, never()).save(any());
     }
 

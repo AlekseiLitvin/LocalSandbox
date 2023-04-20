@@ -1,4 +1,4 @@
-package by.litvin.localsandbox.controller.exception;
+package by.litvin.localsandbox.controller.advice;
 
 import io.minio.errors.MinioException;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +11,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MinioException.class)
     public ResponseEntity<Object> handle(Exception ex) {
         return ResponseEntity.internalServerError().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
 }
