@@ -1,6 +1,6 @@
 package by.litvin.localsandbox.mapper;
 
-import by.litvin.localsandbox.data.CommentResponse;
+import by.litvin.localsandbox.data.CommentDto;
 import by.litvin.localsandbox.model.Comment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,5 +13,5 @@ public interface CommentMapper {
     @Mapping(target = "text", source = "text")
     @Mapping(target = "userId", source = "comment.appUser.id")
     @Mapping(target = "postId", source = "comment.post.id")
-    CommentResponse toCommentResponse(Comment comment);
+    CommentDto toCommentDto(Comment comment);
 }

@@ -1,5 +1,6 @@
 package by.litvin.localsandbox.service.impl;
 
+import by.litvin.localsandbox.data.AppUserDto;
 import by.litvin.localsandbox.data.CreateUserRequest;
 import by.litvin.localsandbox.mapper.AppUserMapper;
 import by.litvin.localsandbox.model.AppUser;
@@ -18,14 +19,15 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional
-    public AppUser create(CreateUserRequest createUserRequest) {
-        AppUser user = appUserMapper.toCreateUserRequest(createUserRequest);
-        return appUserRepository.save(user);
+    public AppUserDto create(CreateUserRequest createUserRequest) {
+        AppUser savedUser = appUserRepository.save(appUserMapper.toAppUser(createUserRequest));
+        return appUserMapper.toAppUserDto(savedUser);
     }
 
     @Override
-    public AppUser getById(Long id) {
-        return appUserRepository.findById(id).orElse(null);
+    public AppUserDto getById(Long id) {
+        AppUser appUser = appUserRepository.findById(id).orElse(null);
+        return appUserMapper.toAppUserDto(appUser);
     }
 
     @Override

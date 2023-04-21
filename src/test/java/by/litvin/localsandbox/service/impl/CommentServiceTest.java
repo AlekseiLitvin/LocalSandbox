@@ -1,5 +1,6 @@
 package by.litvin.localsandbox.service.impl;
 
+import by.litvin.localsandbox.data.CommentDto;
 import by.litvin.localsandbox.data.CreateCommentRequest;
 import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.model.AppUser;
@@ -10,6 +11,7 @@ import by.litvin.localsandbox.repository.CommentRepository;
 import by.litvin.localsandbox.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -36,7 +38,7 @@ class CommentServiceTest {
     @Mock
     AppUserRepository appUserRepository;
     @Spy
-    CommentMapper commentMapper;
+    CommentMapper commentMapper = Mappers.getMapper(CommentMapper.class);
 
     @InjectMocks
     CommentServiceImpl commentService;
@@ -97,7 +99,7 @@ class CommentServiceTest {
     void getById() {
         when(commentRepository.findById(anyLong())).thenReturn(Optional.of(new Comment()));
 
-        Comment comment = commentService.getById(1L);
+        CommentDto comment = commentService.getById(1L);
 
         assertThat(comment).isNotNull();
     }

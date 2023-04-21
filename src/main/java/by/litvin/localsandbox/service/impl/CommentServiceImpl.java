@@ -1,7 +1,8 @@
 package by.litvin.localsandbox.service.impl;
 
-import by.litvin.localsandbox.data.CommentResponse;
+import by.litvin.localsandbox.data.CommentDto;
 import by.litvin.localsandbox.data.CreateCommentRequest;
+import by.litvin.localsandbox.exception.IncorrectParamException;
 import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Comment;
@@ -29,27 +30,28 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentResponse create(CreateCommentRequest createCommentRequest) {
+    public by.litvin.localsandbox.data.CommentDto create(CreateCommentRequest createCommentRequest) {
         Long postId = createCommentRequest.getPostId();
         Long userId = createCommentRequest.getUserId();
         Optional<Post> post = postRepository.findById(postId);
         Optional<AppUser> appUser = appUserRepository.findById(userId);
         if (appUser.isEmpty()) {
             log.warn("User with id {} not found, comment was not saved", userId);
-            throw new IllegalArgumentException("App user with this ID not exists");
+            throw new IncorrectParamException("App user with this ID not exists");
         } else if (post.isEmpty()) {
             log.warn("Post with id {} not found, comment was not saved", postId);
-            throw new IllegalArgumentException("Post with this ID not exists");
+            throw new IncorrectParamException("Post with this ID not exists");
         } else {
             Comment comment = commentRepository.save(new Comment(createCommentRequest.getText(), appUser.get(), post.get()));
-            return commentMapper.toCommentResponse(comment);
+            return commentMapper.toCommentDto(comment);
         }
     }
 
     @Override
 //    @Cacheable(value = "comments", key = "#id")
-    public Comment getById(Long id) {
-        return commentRepository.findById(id).orElse(null);
+    public CommentDto getById(Long id) {
+        Comment comment = commentRepository.findById(id).orElse(null);
+        return commentMapper.toCommentDto(comment);
     }
 
     @Override

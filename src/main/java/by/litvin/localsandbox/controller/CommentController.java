@@ -1,8 +1,7 @@
 package by.litvin.localsandbox.controller;
 
-import by.litvin.localsandbox.data.CommentResponse;
+import by.litvin.localsandbox.data.CommentDto;
 import by.litvin.localsandbox.data.CreateCommentRequest;
-import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,17 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
 
     private final CommentService commentService;
-    private final CommentMapper commentMapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentResponse> findById(@PathVariable Long id) {
-        CommentResponse commentResponse = commentMapper.toCommentResponse(commentService.getById(id));
-        return ResponseEntity.ok(commentResponse);
+    public ResponseEntity<CommentDto> findById(@PathVariable Long id) {
+        CommentDto commentDto = commentService.getById(id);
+        if (commentDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(commentDto);
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponse> create(@RequestBody CreateCommentRequest createCommentRequest) {
-        CommentResponse createCommentResult = commentService.create(createCommentRequest);
+    public ResponseEntity<CommentDto> create(@RequestBody CreateCommentRequest createCommentRequest) {
+        CommentDto createCommentResult = commentService.create(createCommentRequest);
         return new ResponseEntity<>(createCommentResult, HttpStatus.CREATED);
     }
 

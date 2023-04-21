@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class CommentResponse implements Serializable {
+public class CommentDto implements Serializable {
 
     private Long id;
     private String text;

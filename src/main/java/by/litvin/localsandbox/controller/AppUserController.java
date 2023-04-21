@@ -1,7 +1,7 @@
 package by.litvin.localsandbox.controller;
 
+import by.litvin.localsandbox.data.AppUserDto;
 import by.litvin.localsandbox.data.CreateUserRequest;
-import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppUser> findById(@PathVariable Long id) {
-        AppUser user = appUserService.getById(id);
+    public ResponseEntity<AppUserDto> findById(@PathVariable Long id) {
+        AppUserDto user = appUserService.getById(id);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
@@ -31,8 +31,8 @@ public class AppUserController {
     }
 
     @PostMapping
-    public ResponseEntity<AppUser> create(@RequestBody CreateUserRequest createUserRequest) {
-        AppUser createdUser = appUserService.create(createUserRequest);
+    public ResponseEntity<AppUserDto> create(@RequestBody CreateUserRequest createUserRequest) {
+        AppUserDto createdUser = appUserService.create(createUserRequest);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

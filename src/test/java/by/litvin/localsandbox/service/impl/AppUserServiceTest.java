@@ -1,5 +1,6 @@
 package by.litvin.localsandbox.service.impl;
 
+import by.litvin.localsandbox.data.AppUserDto;
 import by.litvin.localsandbox.data.CreateUserRequest;
 import by.litvin.localsandbox.mapper.AppUserMapper;
 import by.litvin.localsandbox.model.AppUser;
@@ -58,8 +59,8 @@ class AppUserServiceTest {
     void testGetById() {
         when(appUserRepository.findById(1L)).thenReturn(Optional.of(new AppUser()));
 
-        AppUser userExists = appUserService.getById(1L);
-        AppUser userNotExists = appUserService.getById(2L);
+        AppUserDto userExists = appUserService.getById(1L);
+        AppUserDto userNotExists = appUserService.getById(2L);
 
         assertThat(userExists).isNotNull();
         assertThat(userNotExists).isNull();
