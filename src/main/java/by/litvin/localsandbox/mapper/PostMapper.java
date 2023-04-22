@@ -13,5 +13,6 @@ public interface PostMapper {
     @Mapping(target = "message", source = "message")
     @Mapping(target = "mediaUrl", source = "mediaUrl")
     @Mapping(target = "userId", source = "post.appUser.id")
+    @Mapping(target = "edited", source = "edited")
     PostDto toPostDto(Post post);
 }

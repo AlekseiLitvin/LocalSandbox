@@ -13,4 +13,5 @@ public class PostDto {
     private String message;
     private String mediaUrl;
     private long userId;
+    private boolean isEdited;
 }

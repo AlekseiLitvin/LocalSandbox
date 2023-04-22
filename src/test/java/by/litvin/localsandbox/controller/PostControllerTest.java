@@ -2,6 +2,7 @@ package by.litvin.localsandbox.controller;
 
 import by.litvin.localsandbox.IntegrationTestBase;
 import by.litvin.localsandbox.data.CreatePostRequest;
+import by.litvin.localsandbox.data.UpdatePostMessageRequest;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Post;
 import by.litvin.localsandbox.repository.AppUserRepository;
@@ -34,6 +35,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -87,6 +89,21 @@ class PostControllerTest extends IntegrationTestBase {
     void findByIdUserNotExists() throws Exception {
         mockMvc.perform(get("/posts/100000"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testUpdatePostMessage() throws Exception {
+        UpdatePostMessageRequest updatePostMessageRequest = new UpdatePostMessageRequest();
+        updatePostMessageRequest.setNewMessage("New post message");
+        mockMvc.perform(patch("/posts/{id}", testPost.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(updatePostMessageRequest))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(testPost.getId()))
+                .andExpect(jsonPath("$.edited").value(true))
+                .andExpect(jsonPath("$.message").value(updatePostMessageRequest.getNewMessage()));
     }
 
     @Test

@@ -37,6 +37,8 @@ public class Post implements Serializable {
 
     private String mediaUrl;
 
+    private boolean isEdited;
+
     @ManyToOne
     @JoinColumn(name = "app_user_id")
     private AppUser appUser;

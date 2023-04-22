@@ -47,6 +47,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
+    public Post updatePostMessage(Long id, String newMessage) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IncorrectParamProblem("Post not found"));
+        post.setMessage(newMessage);
+        post.setEdited(true);
+        return post;
+    }
+
+    @Override
     public String uploadImage(MultipartFile image) {
         return blobStorageService.savePostMedia(image);
     }

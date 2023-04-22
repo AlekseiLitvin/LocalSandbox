@@ -15,4 +15,6 @@ public interface PostService {
     String uploadImage(MultipartFile image);
 
     void deleteImage(String name);
+
+    Post updatePostMessage(Long id, String newMessage);
 }

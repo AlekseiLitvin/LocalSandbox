@@ -3,13 +3,16 @@ package by.litvin.localsandbox.controller;
 import by.litvin.localsandbox.data.CreatePostRequest;
 import by.litvin.localsandbox.data.PostDto;
 import by.litvin.localsandbox.data.PostMediaDto;
+import by.litvin.localsandbox.data.UpdatePostMessageRequest;
 import by.litvin.localsandbox.mapper.PostMapper;
+import by.litvin.localsandbox.model.Post;
 import by.litvin.localsandbox.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +41,12 @@ public class PostController {
     public ResponseEntity<PostDto> create(@RequestBody CreatePostRequest createPostRequest) {
         PostDto postDto = postMapper.toPostDto(postService.create(createPostRequest));
         return ResponseEntity.status(HttpStatus.CREATED).body(postDto);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PostDto> updatePostMessage(@PathVariable Long id, @RequestBody UpdatePostMessageRequest updatePostMessageRequest) {
+        Post post = postService.updatePostMessage(id, updatePostMessageRequest.getNewMessage());
+        return ResponseEntity.ok(postMapper.toPostDto(post));
     }
 
     @DeleteMapping("/{id}")
