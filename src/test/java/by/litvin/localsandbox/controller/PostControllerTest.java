@@ -21,10 +21,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.lessThan;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,7 +48,9 @@ class PostControllerTest extends IntegrationTestBase {
     @Autowired
     AppUserRepository appUserRepository;
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
 
     private Post testPost;
     private AppUser testAppUser;
@@ -68,9 +72,11 @@ class PostControllerTest extends IntegrationTestBase {
     void findByIdUserExists() throws Exception {
         mockMvc.perform(get("/posts/{postId}", testPost.getId()))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(testPost.getId()))
                 .andExpect(jsonPath("$.message").value(testPost.getMessage()))
                 .andExpect(jsonPath("$.mediaUrl").value(testPost.getMediaUrl()))
-                .andExpect(jsonPath("$.appUser.id").value(testAppUser.getId()));
+                .andExpect(jsonPath("$.userId").value(testAppUser.getId()))
+                .andExpect(jsonPath("$.creationTime", lessThan(Instant.now().toString())));
     }
 
     @Test
@@ -105,10 +111,11 @@ class PostControllerTest extends IntegrationTestBase {
                         .content(new ObjectMapper().writeValueAsString(createPostRequest))
                 )
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.post.id").value(testPost.getId() + 1))
-                .andExpect(jsonPath("$.post.mediaUrl").value(mediaUrl))
-                .andExpect(jsonPath("$.post.message").value(createPostRequest.getMessage()))
-                .andExpect(jsonPath("$.post.appUser.id").value(createPostRequest.getUserId()));
+                .andExpect(jsonPath("$.id").value(testPost.getId() + 1))
+                .andExpect(jsonPath("$.mediaUrl").value(mediaUrl))
+                .andExpect(jsonPath("$.message").value(createPostRequest.getMessage()))
+                .andExpect(jsonPath("$.userId").value(createPostRequest.getUserId()))
+                .andExpect(jsonPath("$.creationTime", lessThan(Instant.now().toString())));
 
         // SQL sequence increments ID by 1
         Optional<Post> postOpt = postRepository.findById(testPost.getId() + 1);

@@ -2,7 +2,7 @@ package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CommentDto;
 import by.litvin.localsandbox.data.CreateCommentRequest;
-import by.litvin.localsandbox.exception.IncorrectParamException;
+import by.litvin.localsandbox.exception.IncorrectParamProblem;
 import by.litvin.localsandbox.mapper.CommentMapper;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Comment;
@@ -37,10 +37,10 @@ public class CommentServiceImpl implements CommentService {
         Optional<AppUser> appUser = appUserRepository.findById(userId);
         if (appUser.isEmpty()) {
             log.warn("User with id {} not found, comment was not saved", userId);
-            throw new IncorrectParamException("App user with this ID not exists");
+            throw new IncorrectParamProblem("App user with this ID not exists");
         } else if (post.isEmpty()) {
             log.warn("Post with id {} not found, comment was not saved", postId);
-            throw new IncorrectParamException("Post with this ID not exists");
+            throw new IncorrectParamProblem("Post with this ID not exists");
         } else {
             Comment comment = commentRepository.save(new Comment(createCommentRequest.getText(), appUser.get(), post.get()));
             return commentMapper.toCommentDto(comment);

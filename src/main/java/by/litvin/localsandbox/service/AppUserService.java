@@ -1,13 +1,12 @@
 package by.litvin.localsandbox.service;
 
-import by.litvin.localsandbox.data.AppUserDto;
-import by.litvin.localsandbox.data.CreateUserRequest;
+import by.litvin.localsandbox.model.AppUser;
 
 public interface AppUserService {
 
-    AppUserDto create(CreateUserRequest appUserData);
+    AppUser create(AppUser appUserData);
 
-    AppUserDto getById(Long id);
+    AppUser getById(Long id);
 
     void deleteById(Long id);
 }

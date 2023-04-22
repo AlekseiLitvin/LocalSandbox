@@ -1,7 +1,5 @@
 package by.litvin.localsandbox.service.impl;
 
-import by.litvin.localsandbox.data.AppUserDto;
-import by.litvin.localsandbox.data.CreateUserRequest;
 import by.litvin.localsandbox.mapper.AppUserMapper;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.repository.AppUserRepository;
@@ -35,17 +33,17 @@ class AppUserServiceTest {
     @Test
     void createUserTest() {
         ArgumentCaptor<AppUser> user = ArgumentCaptor.forClass(AppUser.class);
-        CreateUserRequest createUserRequest = new CreateUserRequest();
+        AppUser appUser = new AppUser();
         String email = "abc@mail.com";
         String phone = "123-321-123";
         String firstName = "John";
         String lastName = "Smith";
-        createUserRequest.setEmail(email);
-        createUserRequest.setPhone(phone);
-        createUserRequest.setFirstName(firstName);
-        createUserRequest.setLastName(lastName);
+        appUser.setEmail(email);
+        appUser.setPhone(phone);
+        appUser.setFirstName(firstName);
+        appUser.setLastName(lastName);
 
-        appUserService.create(createUserRequest);
+        appUserService.create(appUser);
 
         verify(appUserRepository, times(1)).save(user.capture());
         AppUser capturedUser = user.getValue();
@@ -59,8 +57,8 @@ class AppUserServiceTest {
     void testGetById() {
         when(appUserRepository.findById(1L)).thenReturn(Optional.of(new AppUser()));
 
-        AppUserDto userExists = appUserService.getById(1L);
-        AppUserDto userNotExists = appUserService.getById(2L);
+        AppUser userExists = appUserService.getById(1L);
+        AppUser userNotExists = appUserService.getById(2L);
 
         assertThat(userExists).isNotNull();
         assertThat(userNotExists).isNull();

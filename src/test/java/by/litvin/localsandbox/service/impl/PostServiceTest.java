@@ -1,7 +1,7 @@
 package by.litvin.localsandbox.service.impl;
 
 import by.litvin.localsandbox.data.CreatePostRequest;
-import by.litvin.localsandbox.data.CreatePostResult;
+import by.litvin.localsandbox.exception.IncorrectParamProblem;
 import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.model.Post;
 import by.litvin.localsandbox.repository.AppUserRepository;
@@ -12,11 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -35,8 +35,6 @@ class PostServiceTest {
     @InjectMocks
     PostServiceImpl postService;
 
-    MultipartFile media;
-
     @Test
     void testCreatePost() {
         AppUser user = new AppUser("John", "Smith", "abc@mail.com", "123-321-321");
@@ -50,10 +48,8 @@ class PostServiceTest {
         when(appUserRepository.findById(userId)).thenReturn(Optional.of(user));
         when(postRepository.save(any())).thenReturn(post);
 
-        CreatePostResult createPostResult = postService.create(createPostRequest);
+        Post createdPost = postService.create(createPostRequest);
 
-        Post createdPost = createPostResult.getPost();
-        assertThat(createPostResult.getStatus()).isEqualTo(CreatePostResult.Status.CREATED);
         assertThat(createdPost.getMessage()).isEqualTo(post.getMessage());
         assertThat(createdPost.getMediaUrl()).isEqualTo(mediaUrl);
     }
@@ -62,9 +58,9 @@ class PostServiceTest {
     void testUserNotExists() {
         when(appUserRepository.findById(any())).thenReturn(Optional.empty());
 
-        CreatePostResult createPostResult = postService.create(new CreatePostRequest());
+        IncorrectParamProblem incorrectParamProblem = assertThrows(IncorrectParamProblem.class, () -> postService.create(new CreatePostRequest()));
 
-        assertThat(createPostResult.getStatus()).isEqualTo(CreatePostResult.Status.USER_NOT_EXISTS);
+        assertThat(incorrectParamProblem.getMessage()).isEqualTo("User not found");
         verify(postRepository, never()).save(any());
     }
 
@@ -79,11 +75,9 @@ class PostServiceTest {
         when(appUserRepository.findById(userId)).thenReturn(Optional.of(user));
         when(postRepository.save(any())).thenReturn(post);
 
-        CreatePostResult createPostResult = postService.create(createPostRequest);
+        Post createdPost = postService.create(createPostRequest);
 
-        Post createdPost = createPostResult.getPost();
         verify(blobStorageService, never()).savePostMedia(any());
-        assertThat(createPostResult.getStatus()).isEqualTo(CreatePostResult.Status.CREATED);
         assertThat(createdPost.getMessage()).isEqualTo(post.getMessage());
         assertThat(createdPost.getMediaUrl()).isNull();
     }

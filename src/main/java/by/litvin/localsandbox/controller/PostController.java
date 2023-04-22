@@ -1,9 +1,9 @@
 package by.litvin.localsandbox.controller;
 
 import by.litvin.localsandbox.data.CreatePostRequest;
-import by.litvin.localsandbox.data.CreatePostResult;
-import by.litvin.localsandbox.data.UploadImageResult;
-import by.litvin.localsandbox.model.Post;
+import by.litvin.localsandbox.data.PostDto;
+import by.litvin.localsandbox.data.PostMediaDto;
+import by.litvin.localsandbox.mapper.PostMapper;
 import by.litvin.localsandbox.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,24 +23,21 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostController {
 
     private final PostService postService;
+    private final PostMapper postMapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> findById(@PathVariable Long id) {
-        Post post = postService.getById(id);
-        if (post == null) {
+    public ResponseEntity<PostDto> findById(@PathVariable Long id) {
+        PostDto postDto = postMapper.toPostDto(postService.getById(id));
+        if (postDto == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(post);
+        return ResponseEntity.ok(postDto);
     }
 
     @PostMapping
-    public ResponseEntity<CreatePostResult> create(@RequestBody CreatePostRequest createPostRequest) {
-        CreatePostResult createPostResult = postService.create(createPostRequest);
-        if (createPostResult.getStatus() == CreatePostResult.Status.USER_NOT_EXISTS) {
-            return ResponseEntity.badRequest().body(createPostResult);
-        } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(createPostResult);
-        }
+    public ResponseEntity<PostDto> create(@RequestBody CreatePostRequest createPostRequest) {
+        PostDto postDto = postMapper.toPostDto(postService.create(createPostRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(postDto);
     }
 
     @DeleteMapping("/{id}")
@@ -51,9 +48,9 @@ public class PostController {
 
 
     @PostMapping("/image")
-    public ResponseEntity<UploadImageResult> uploadImage(@RequestBody MultipartFile file) {
-        UploadImageResult uploadImageResult = postService.uploadImage(file);
-        return new ResponseEntity<>(uploadImageResult, HttpStatus.CREATED);
+    public ResponseEntity<PostMediaDto> uploadImage(@RequestBody MultipartFile file) {
+        String savedMediaUrl = postService.uploadImage(file);
+        return new ResponseEntity<>(new PostMediaDto(savedMediaUrl), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/image")

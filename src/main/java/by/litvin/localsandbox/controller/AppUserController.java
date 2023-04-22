@@ -2,6 +2,8 @@ package by.litvin.localsandbox.controller;
 
 import by.litvin.localsandbox.data.AppUserDto;
 import by.litvin.localsandbox.data.CreateUserRequest;
+import by.litvin.localsandbox.mapper.AppUserMapper;
+import by.litvin.localsandbox.model.AppUser;
 import by.litvin.localsandbox.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,20 +22,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppUserController {
 
     private final AppUserService appUserService;
+    private final AppUserMapper appUserMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<AppUserDto> findById(@PathVariable Long id) {
-        AppUserDto user = appUserService.getById(id);
-        if (user == null) {
+        AppUserDto appUserDto = appUserMapper.toAppUserDto(appUserService.getById(id));
+        if (appUserDto == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(appUserDto);
     }
 
     @PostMapping
     public ResponseEntity<AppUserDto> create(@RequestBody CreateUserRequest createUserRequest) {
-        AppUserDto createdUser = appUserService.create(createUserRequest);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        AppUser createdUser = appUserService.create(appUserMapper.toAppUser(createUserRequest));
+        return new ResponseEntity<>(appUserMapper.toAppUserDto(createdUser), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
