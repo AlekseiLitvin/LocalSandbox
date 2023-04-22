@@ -8,6 +8,7 @@ import by.litvin.localsandbox.repository.AppUserRepository;
 import by.litvin.localsandbox.repository.PostRepository;
 import by.litvin.localsandbox.service.BlobStorageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +77,10 @@ class PostControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.message").value(testPost.getMessage()))
                 .andExpect(jsonPath("$.mediaUrl").value(testPost.getMediaUrl()))
                 .andExpect(jsonPath("$.userId").value(testAppUser.getId()))
-                .andExpect(jsonPath("$.creationTime", lessThan(Instant.now().toString())));
+                .andDo(result -> {
+                    String creationTime = JsonPath.read(result.getResponse().getContentAsString(), "$.creationTime");
+                    assertThat(LocalDateTime.parse(creationTime)).isBetween(LocalDateTime.now().minusMinutes(5), LocalDateTime.now());
+                });
     }
 
     @Test
@@ -115,7 +119,12 @@ class PostControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.mediaUrl").value(mediaUrl))
                 .andExpect(jsonPath("$.message").value(createPostRequest.getMessage()))
                 .andExpect(jsonPath("$.userId").value(createPostRequest.getUserId()))
-                .andExpect(jsonPath("$.creationTime", lessThan(Instant.now().toString())));
+                .andExpect(jsonPath("$.creationTime", lessThan(Instant.now().toString())))
+                .andDo(result -> {
+                    String creationTime = JsonPath.read(result.getResponse().getContentAsString(), "$.creationTime");
+                    assertThat(LocalDateTime.parse(creationTime)).isBetween(LocalDateTime.now().minusMinutes(5), LocalDateTime.now());
+                });
+
 
         // SQL sequence increments ID by 1
         Optional<Post> postOpt = postRepository.findById(testPost.getId() + 1);
