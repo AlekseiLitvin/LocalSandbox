@@ -76,9 +76,19 @@ services:
       - "9187:9187"
     environment:
       - DATA_SOURCE_NAME=postgresql://root:root@pg_db:5432/vardb?sslmode=disable
+  kuma:
+    image: louislam/uptime-kuma:1
+    container_name: kuma
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime-kuma:/app/data
 
 
 volumes:
+  uptime-kuma:
+    driver: local
   postgres_data:
     driver: local
   sonarqube_extensions:
